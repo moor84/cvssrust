@@ -1,4 +1,7 @@
 # Rust CVSS
+
+![Rust](https://github.com/moor84/cvssrust/workflows/Rust/badge.svg)
+
 Rust implementation of the Common Vulnerability Scoring System (v2 / v3.0 / v3.1).
 
 Supports parsing, generation and score calculation for CVSS vectors v2/v3.0/v3.1
