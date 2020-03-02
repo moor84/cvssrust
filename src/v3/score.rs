@@ -49,7 +49,31 @@ impl CVSSScore for V3Vector {
     }
 
     fn environmental_score(&self) -> Score {
-        Score::from(0.0)
+        let modified_impact = self.modified_impact().value();
+        let modified_exploitability = self.modified_exploitability().value();
+        if modified_impact == 0.0 {
+            return Score::from(0.0)
+        }
+        let roundup = match self.minor_version {
+            MinorVersion::V1 => roundup_3_1,
+            MinorVersion::V0 => roundup_3_0,
+        };
+        let score = if self.modified_scope_changed() {
+            roundup(
+                (1.08 * (modified_impact + modified_exploitability)).min(10.0)
+            )
+             * self.exploit_code_maturity.num_value()
+             * self.remediation_level.num_value()
+             * self.report_confidence.num_value()
+        } else {
+            roundup(
+                (modified_impact + modified_exploitability).min(10.0)
+            )
+             * self.exploit_code_maturity.num_value()
+             * self.remediation_level.num_value()
+             * self.report_confidence.num_value()
+        };
+        Score::from(roundup(score))
     }
 }
 
