@@ -1,4 +1,4 @@
-use crate::common::{AsStr, Optional, ParseError};
+use crate::common::{AsStr, Optional, ParseError, NumValue};
 use std::str;
 
 #[derive(Debug, PartialEq)]
@@ -112,6 +112,17 @@ impl str::FromStr for ConfidentialityRequirement {
     }
 }
 
+impl NumValue for ConfidentialityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            ConfidentialityRequirement::NotDefined => 1.0,
+            ConfidentialityRequirement::High => 1.5,
+            ConfidentialityRequirement::Medium => 1.0,
+            ConfidentialityRequirement::Low => 0.5,
+        }
+    }
+}
+
 impl Optional for ConfidentialityRequirement {
     fn is_undefined(&self) -> bool {
         match self {
@@ -146,6 +157,17 @@ impl str::FromStr for IntegrityRequirement {
     }
 }
 
+impl NumValue for IntegrityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            IntegrityRequirement::NotDefined => 1.0,
+            IntegrityRequirement::High => 1.5,
+            IntegrityRequirement::Medium => 1.0,
+            IntegrityRequirement::Low => 0.5,
+        }
+    }
+}
+
 impl Optional for IntegrityRequirement {
     fn is_undefined(&self) -> bool {
         match self {
@@ -176,6 +198,17 @@ impl str::FromStr for AvailabilityRequirement {
             "M" => Ok(AvailabilityRequirement::Medium),
             "L" => Ok(AvailabilityRequirement::Low),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for AvailabilityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            AvailabilityRequirement::NotDefined => 1.0,
+            AvailabilityRequirement::High => 1.5,
+            AvailabilityRequirement::Medium => 1.0,
+            AvailabilityRequirement::Low => 0.5,
         }
     }
 }
@@ -216,6 +249,18 @@ impl str::FromStr for ModifiedAttackVector {
     }
 }
 
+impl NumValue for ModifiedAttackVector {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedAttackVector::NotDefined => 1.0,
+            ModifiedAttackVector::Network => 0.85,
+            ModifiedAttackVector::Adjacent => 0.62,
+            ModifiedAttackVector::Local => 0.55,
+            ModifiedAttackVector::Physical => 0.2,
+        }
+    }
+}
+
 impl Optional for ModifiedAttackVector {
     fn is_undefined(&self) -> bool {
         match self {
@@ -244,6 +289,16 @@ impl str::FromStr for ModifiedAttackComplexity {
             "L" => Ok(ModifiedAttackComplexity::Low),
             "H" => Ok(ModifiedAttackComplexity::High),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for ModifiedAttackComplexity {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedAttackComplexity::NotDefined => 1.0,
+            ModifiedAttackComplexity::Low => 0.77,
+            ModifiedAttackComplexity::High => 0.44,
         }
     }
 }
@@ -282,6 +337,33 @@ impl str::FromStr for ModifiedPrivilegesRequired {
     }
 }
 
+impl NumValue for ModifiedPrivilegesRequired {
+    fn num_value(&self) -> f64 {
+        self.num_value_scoped(false)
+    }
+
+    fn num_value_scoped(&self, scope_change: bool) -> f64 {
+        match self {
+            ModifiedPrivilegesRequired::NotDefined => 1.0,
+            ModifiedPrivilegesRequired::None => 0.85,
+            ModifiedPrivilegesRequired::Low => {
+                if scope_change {
+                    0.68
+                } else {
+                    0.62
+                }
+            }
+            ModifiedPrivilegesRequired::High => {
+                if scope_change {
+                    0.5
+                } else {
+                    0.27
+                }
+            }
+        }
+    }
+}
+
 impl Optional for ModifiedPrivilegesRequired {
     fn is_undefined(&self) -> bool {
         match self {
@@ -310,6 +392,16 @@ impl str::FromStr for ModifiedUserInteraction {
             "N" => Ok(ModifiedUserInteraction::None),
             "R" => Ok(ModifiedUserInteraction::Required),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for ModifiedUserInteraction {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedUserInteraction::NotDefined => 1.0,
+            ModifiedUserInteraction::None => 0.85,
+            ModifiedUserInteraction::Required => 0.62,
         }
     }
 }
@@ -380,6 +472,17 @@ impl str::FromStr for ModifiedConfidentiality {
     }
 }
 
+impl NumValue for ModifiedConfidentiality {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedConfidentiality::NotDefined => 1.0,
+            ModifiedConfidentiality::High => 0.56,
+            ModifiedConfidentiality::Low => 0.22,
+            ModifiedConfidentiality::None => 0.0,
+        }
+    }
+}
+
 impl Optional for ModifiedConfidentiality {
     fn is_undefined(&self) -> bool {
         match self {
@@ -414,6 +517,17 @@ impl str::FromStr for ModifiedIntegrity {
     }
 }
 
+impl NumValue for ModifiedIntegrity {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedIntegrity::NotDefined => 1.0,
+            ModifiedIntegrity::High => 0.56,
+            ModifiedIntegrity::Low => 0.22,
+            ModifiedIntegrity::None => 0.0,
+        }
+    }
+}
+
 impl Optional for ModifiedIntegrity {
     fn is_undefined(&self) -> bool {
         match self {
@@ -444,6 +558,17 @@ impl str::FromStr for ModifiedAvailability {
             "L" => Ok(ModifiedAvailability::Low),
             "N" => Ok(ModifiedAvailability::None),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for ModifiedAvailability {
+    fn num_value(&self) -> f64 {
+        match self {
+            ModifiedAvailability::NotDefined => 1.0,
+            ModifiedAvailability::High => 0.56,
+            ModifiedAvailability::Low => 0.22,
+            ModifiedAvailability::None => 0.0,
         }
     }
 }

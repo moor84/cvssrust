@@ -41,3 +41,15 @@ impl CVSSScore for V2Vector {
 fn round_to_1_decimal(input: f64) -> f64 {
     (input * 10.0).ceil() / 10.0
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_round_to_1_decimal() {
+        assert_eq!(round_to_1_decimal(4.0), 4.0);
+        assert_eq!(round_to_1_decimal(4.02), 4.1);
+        assert_eq!(round_to_1_decimal(4.07), 4.1);
+    }
+}
