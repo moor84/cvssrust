@@ -9,7 +9,7 @@ Supports parsing, generation and score calculation for CVSS vectors v2/v3.0/v3.1
 Current CVSS version is v3.1, but v3.0 and v2 are still in use.
 
 ## Example
-```
+```rust
 use cvssrust::{CVSS, CVSSScore};
 
 let vector = "CVSS:3.1/AV:P/AC:H/PR:L/UI:R/S:U/C:L/I:L/A:H/E:H/RL:U/RC:U";
@@ -34,4 +34,4 @@ https://www.first.org/cvss/v3.0/specification-document
 https://www.first.org/cvss/v2/guide
 
 ## Requirements:
-Rust 1.41+
+
