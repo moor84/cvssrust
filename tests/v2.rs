@@ -8,17 +8,23 @@ fn test_parse_vectors_v2() {
             "AV:N/AC:M/Au:N/C:P/I:P/A:N",
             5.8,
             Severity::Medium,
-            0.0,
+            5.8,
             0.0,
         ),
         // https://nvd.nist.gov/vuln/detail/CVE-2014-0011
-        ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 0.0, 0.0),
+        (
+            "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+            7.5,
+            Severity::High,
+            7.5,
+            0.0
+        ),
         // https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR)
         (
             "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR",
             6.7,
             Severity::Medium,
-            0.0,
+            5.4,
             0.0,
         ),
         // https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M)
@@ -26,7 +32,7 @@ fn test_parse_vectors_v2() {
             "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M",
             6.7,
             Severity::Medium,
-            0.0,
+            5.4,
             0.0,
         ),
     ];

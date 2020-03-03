@@ -44,8 +44,18 @@ impl CVSSScore for V3Vector {
         })
     }
 
+    /// TemporalScore =  Roundup (
+    /// BaseScore × ExploitCodeMaturity × RemediationLevel × ReportConfidence)
     fn temporal_score(&self) -> Score {
-        Score::from(0.0)
+        let score = self.base_score().value()
+            * self.exploit_code_maturity.num_value() 
+            * self.remediation_level.num_value() 
+            * self.report_confidence.num_value();
+        Score::from(if self.minor_version == MinorVersion::V1 {
+            roundup_3_1(score)
+        } else {
+            roundup_3_0(score)
+        })
     }
 
     fn environmental_score(&self) -> Score {

@@ -1,4 +1,4 @@
-use crate::common::{AsStr, Optional, ParseError};
+use crate::common::{AsStr, Optional, ParseError, NumValue};
 use std::str;
 
 #[derive(Debug, PartialEq)]
@@ -54,6 +54,18 @@ impl str::FromStr for Exploitability {
     }
 }
 
+impl NumValue for Exploitability {
+    fn num_value(&self) -> f64 {
+        match self {
+            Exploitability::NotDefined => 1.0,
+            Exploitability::High => 1.0,
+            Exploitability::Functional => 0.95,
+            Exploitability::ProofOfConcept => 0.9,
+            Exploitability::Unproven => 0.85,
+        }
+    }
+}
+
 impl Optional for Exploitability {
     fn is_undefined(&self) -> bool {
         match self {
@@ -90,6 +102,18 @@ impl str::FromStr for RemediationLevel {
     }
 }
 
+impl NumValue for RemediationLevel {
+    fn num_value(&self) -> f64 {
+        match self {
+            RemediationLevel::NotDefined => 1.0,
+            RemediationLevel::Unavailable => 1.0,
+            RemediationLevel::Workaround => 0.95,
+            RemediationLevel::TemporaryFix => 0.90,
+            RemediationLevel::OfficialFix => 0.87,
+        }
+    }
+}
+
 impl Optional for RemediationLevel {
     fn is_undefined(&self) -> bool {
         match self {
@@ -120,6 +144,17 @@ impl str::FromStr for ReportConfidence {
             "C" => Ok(ReportConfidence::Confirmed),
             "ND" => Ok(ReportConfidence::NotDefined),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for ReportConfidence {
+    fn num_value(&self) -> f64 {
+        match self {
+            ReportConfidence::Unconfirmed => 0.90,
+            ReportConfidence::Uncorroborated => 0.95,
+            ReportConfidence::Confirmed => 1.0,
+            ReportConfidence::NotDefined => 1.0,
         }
     }
 }

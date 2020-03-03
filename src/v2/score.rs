@@ -29,8 +29,14 @@ impl CVSSScore for V2Vector {
         ))
     }
 
+    /// TemporalScore = round_to_1_decimal(BaseScore*Exploitability
+    /// *RemediationLevel*ReportConfidence)
     fn temporal_score(&self) -> Score {
-        Score::from(0.0)
+        let score = self.base_score().value()
+            * self.exploitability.num_value()
+            * self.remediation_level.num_value()
+            * self.report_confidence.num_value();
+        Score::from(round_to_1_decimal(score))
     }
 
     fn environmental_score(&self) -> Score {

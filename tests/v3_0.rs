@@ -8,7 +8,7 @@ fn test_parse_vectors_v3_0() {
             "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
             8.1,
             Severity::High,
-            0.0,
+            8.1,
             0.0,
         ),
         // https://nvd.nist.gov/vuln/detail/CVE-2014-0011
@@ -16,7 +16,7 @@ fn test_parse_vectors_v3_0() {
             "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
             9.8,
             Severity::Critical,
-            0.0,
+            9.8,
             0.0,
         ),
         // https://www.first.org/cvss/user-guide#2-6-Formula-Changes
@@ -29,7 +29,7 @@ fn test_parse_vectors_v3_0() {
             "CVSS:3.0/AV:P/AC:H/PR:L/UI:R/S:U/C:L/I:L/A:H/E:H/RL:U/RC:U",
             5.0,
             Severity::Medium,
-            0.0,
+            4.7,
             0.0,
         ),
     ];
