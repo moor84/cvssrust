@@ -1,8 +1,8 @@
-use super::{base, MinorVersion, V3Vector, env};
+use super::{base, env, MinorVersion, V3Vector};
 use crate::common::{CVSSScore, NumValue, Score};
 
 impl CVSSScore for V3Vector {
-    fn impact(&self) -> Score {
+    fn impact_score(&self) -> Score {
         Score::from(
             1.0 - ((1.0 - self.confidentiality.num_value())
                 * (1.0 - self.integrity.num_value())
@@ -10,7 +10,7 @@ impl CVSSScore for V3Vector {
         )
     }
 
-    fn expoitability(&self) -> Score {
+    fn expoitability_score(&self) -> Score {
         Score::from(
             8.22 * self.attack_vector.num_value()
                 * self.attack_complexity.num_value()
@@ -22,8 +22,8 @@ impl CVSSScore for V3Vector {
     }
 
     fn base_score(&self) -> Score {
-        let iss = self.impact().value();
-        let expoitability = self.expoitability().value();
+        let iss = self.impact_score().value();
+        let expoitability = self.expoitability_score().value();
         let scope_changed = self.scope == base::Scope::Changed;
         let impact = if scope_changed {
             7.52 * (iss - 0.029) - 3.25 * (iss - 0.02).powf(15.0)
@@ -48,8 +48,8 @@ impl CVSSScore for V3Vector {
     /// BaseScore × ExploitCodeMaturity × RemediationLevel × ReportConfidence)
     fn temporal_score(&self) -> Score {
         let score = self.base_score().value()
-            * self.exploit_code_maturity.num_value() 
-            * self.remediation_level.num_value() 
+            * self.exploit_code_maturity.num_value()
+            * self.remediation_level.num_value()
             * self.report_confidence.num_value();
         Score::from(if self.minor_version == MinorVersion::V1 {
             roundup_3_1(score)
@@ -62,26 +62,22 @@ impl CVSSScore for V3Vector {
         let modified_impact = self.modified_impact().value();
         let modified_exploitability = self.modified_exploitability().value();
         if modified_impact == 0.0 {
-            return Score::from(0.0)
+            return Score::from(0.0);
         }
         let roundup = match self.minor_version {
             MinorVersion::V1 => roundup_3_1,
             MinorVersion::V0 => roundup_3_0,
         };
         let score = if self.modified_scope_changed() {
-            roundup(
-                (1.08 * (modified_impact + modified_exploitability)).min(10.0)
-            )
-             * self.exploit_code_maturity.num_value()
-             * self.remediation_level.num_value()
-             * self.report_confidence.num_value()
+            roundup((1.08 * (modified_impact + modified_exploitability)).min(10.0))
+                * self.exploit_code_maturity.num_value()
+                * self.remediation_level.num_value()
+                * self.report_confidence.num_value()
         } else {
-            roundup(
-                (modified_impact + modified_exploitability).min(10.0)
-            )
-             * self.exploit_code_maturity.num_value()
-             * self.remediation_level.num_value()
-             * self.report_confidence.num_value()
+            roundup((modified_impact + modified_exploitability).min(10.0))
+                * self.exploit_code_maturity.num_value()
+                * self.remediation_level.num_value()
+                * self.report_confidence.num_value()
         };
         Score::from(roundup(score))
     }
@@ -97,20 +93,17 @@ impl V3Vector {
     }
 
     pub fn modified_impact_subscore(&self) -> Score {
-        let miss = (1.0 - (
-            (
-                1.0 - self.confidentiality_requirement.num_value() 
-                * self.modified_confidentiality.num_value()
-            )
-            * (
-                1.0 - self.integrity_requirement.num_value()
-                * self.modified_integrity.num_value()
-            )
-            * (
-                1.0 - self.availability_requirement.num_value()
-                * self.modified_availability.num_value()
-            )
-        )).min(0.915);
+        let miss = (1.0
+            - ((1.0
+                - self.confidentiality_requirement.num_value()
+                    * self.modified_confidentiality.num_value())
+                * (1.0
+                    - self.integrity_requirement.num_value()
+                        * self.modified_integrity.num_value())
+                * (1.0
+                    - self.availability_requirement.num_value()
+                        * self.modified_availability.num_value())))
+        .min(0.915);
         Score::from(miss)
     }
 
@@ -132,11 +125,14 @@ impl V3Vector {
     pub fn modified_exploitability(&self) -> Score {
         let scope_changed = self.modified_scope_changed();
         Score::from(
-            8.22 
-            * self.modified_attack_vector.num_value()
-            * self.modified_attack_complexity.num_value()
-            * self.modified_privileges_required.num_value_scoped(scope_changed)
-            * self.modified_user_interaction.num_value_scoped(scope_changed)
+            8.22 * self.modified_attack_vector.num_value()
+                * self.modified_attack_complexity.num_value()
+                * self
+                    .modified_privileges_required
+                    .num_value_scoped(scope_changed)
+                * self
+                    .modified_user_interaction
+                    .num_value_scoped(scope_changed),
         )
     }
 }

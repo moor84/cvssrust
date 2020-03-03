@@ -1,4 +1,4 @@
-use crate::common::{AsStr, Optional, ParseError, NumValue};
+use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
 #[derive(Debug, PartialEq)]
