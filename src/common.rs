@@ -130,7 +130,6 @@ pub fn append_metric_optional<T: AsStr + Optional>(vector: &mut String, metric: 
 }
 
 /// Parse CVSS vector and return metrics as a hash map of strings.
-// TODO: is there a way to avoid copying of the HashMap?
 pub fn parse_metrics(cvss_str: &str) -> Result<HashMap<&str, &str>, ParseError> {
     let mut parsed = HashMap::new();
 

@@ -9,6 +9,21 @@ use std::fmt::Display;
 use std::str::FromStr;
 
 #[derive(Debug)]
+/// CVSS vector version v2
+/// 
+/// ```
+/// use cvssrust::{V2Vector, CVSSScore};
+/// use std::str::FromStr;
+/// 
+/// let cvss_str = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
+/// let cvss = V2Vector::from_str(cvss_str).unwrap();
+/// 
+/// assert_eq!(cvss.to_string(), String::from(cvss_str));
+/// assert_eq!(cvss.base_score().value(), 6.7);
+/// assert_eq!(cvss.base_score().severity().to_string(), "Medium");
+/// assert_eq!(cvss.temporal_score().value(), 5.5);
+/// ```
+/// 
 pub struct V2Vector {
     pub access_vector: base::AccessVector,
     pub access_complexity: base::AccessComplexity,
@@ -148,9 +163,55 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
+    fn test_parse_v2_brackets() {
+        let cvss_str = "(AV:N/AC:M/Au:N/C:P/I:P/A:N)";
+        V2Vector::from_str(cvss_str).unwrap();
+    }
+
+    #[test]
     fn test_parse_v2_temp_env() {
         let cvss_str = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
         let vector = V2Vector::from_str(cvss_str).unwrap();
         assert_eq!(vector.to_string(), cvss_str);
+
+        assert_eq!(vector.access_vector, base::AccessVector::AdjacentNetwork);
+        assert_eq!(vector.access_complexity, base::AccessComplexity::Low);
+        assert_eq!(vector.authentication, base::Authentication::Single);
+        assert_eq!(vector.confidentiality_impact, base::ConfidentialityImpact::Partial);
+        assert_eq!(vector.integrity_impact, base::IntegrityImpact::Partial);
+        assert_eq!(vector.availability_impact, base::AvailabilityImpact::Complete);
+        assert_eq!(vector.exploitability, temporal::Exploitability::ProofOfConcept);
+        assert_eq!(vector.remediation_level, temporal::RemediationLevel::Workaround);
+        assert_eq!(vector.report_confidence, temporal::ReportConfidence::Uncorroborated);
+        assert_eq!(vector.collateral_damage_potential, env::CollateralDamagePotential::LowMedium);
+        assert_eq!(vector.target_distribution, env::TargetDistribution::High);
+        assert_eq!(vector.confidentiality_requirement, env::ConfidentialityRequirement::Medium);
+        assert_eq!(vector.integrity_requirement, env::IntegrityRequirement::Medium);
+        assert_eq!(vector.availability_requirement, env::AvailabilityRequirement::Medium);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_not_a_vector() {
+        V2Vector::from_str("Blablabla").unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_missing_access_complexity() {
+        V2Vector::from_str("AV:N/Au:N/C:P/I:P/A:N").unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_wrong_au_value() {
+        V2Vector::from_str("AV:N/AC:M/Au:WRONG/C:P/I:P/A:N").unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_wrong_temporal() {
+        V2Vector::from_str("AV:A/AC:L/Au:S/C:P/I:P/A:C/E:WRONG").unwrap();
     }
 }

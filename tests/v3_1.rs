@@ -63,3 +63,39 @@ test_v3_1!(
         4.6,
     )
 );
+
+// https://nvd.nist.gov/vuln/detail/CVE-2019-11510
+test_v3_1!(
+    test_v31_cve_2019_11510,
+    (
+        "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+        10.0,
+        Severity::Critical,
+        10.0,
+        10.0,
+    )
+);
+
+// https://nvd.nist.gov/vuln/detail/CVE-2019-15001
+test_v3_1!(
+    test_v31_cve_2019_15001,
+    (
+        "CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H",
+        7.2,
+        Severity::High,
+        7.2,
+        7.2,
+    )
+);
+
+// https://nvd.nist.gov/vuln/detail/CVE-2019-1040
+test_v3_1!(
+    test_v31_cve_2019_1040,
+    (
+        "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N",
+        5.9,
+        Severity::Medium,
+        5.9,
+        5.9,
+    )
+);

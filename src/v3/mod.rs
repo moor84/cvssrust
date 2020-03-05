@@ -40,6 +40,20 @@ impl AsStr for MinorVersion {
 #[rustfmt::skip]
 #[derive(Debug)]
 /// CVSS vector version 3.0/3.1
+/// 
+/// ```
+/// use cvssrust::{V3Vector, CVSSScore};
+/// use std::str::FromStr;
+/// 
+/// let cvss_str = "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:P/RL:W/RC:C";
+/// let cvss = V3Vector::from_str(cvss_str).unwrap();
+/// 
+/// assert_eq!(cvss.to_string(), String::from(cvss_str));
+/// assert_eq!(cvss.base_score().value(), 6.1);
+/// assert_eq!(cvss.base_score().severity().to_string(), "Medium");
+/// assert_eq!(cvss.temporal_score().value(), 5.6);
+/// ```
+/// 
 pub struct V3Vector {
     pub minor_version: MinorVersion,
     
@@ -243,6 +257,12 @@ mod tests {
             vector.report_confidence,
             temporal::ReportConfidence::Confirmed
         );
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_not_a_vector() {
+        V3Vector::from_str("Blablabla").unwrap();
     }
 
     #[test]
