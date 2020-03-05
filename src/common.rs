@@ -5,8 +5,8 @@ pub const METRIC_DELIM: char = ':';
 pub const VECTOR_DELIM: char = '/';
 
 pub trait CVSSScore {
-    fn impact(&self) -> Score;
-    fn expoitability(&self) -> Score;
+    fn impact_score(&self) -> Score;
+    fn expoitability_score(&self) -> Score;
     fn base_score(&self) -> Score;
     fn temporal_score(&self) -> Score;
     fn environmental_score(&self) -> Score;

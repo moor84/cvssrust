@@ -1,4 +1,4 @@
-use crate::common::{AsStr, Optional, ParseError};
+use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
 #[derive(Debug, PartialEq)]
@@ -73,6 +73,19 @@ impl str::FromStr for CollateralDamagePotential {
     }
 }
 
+impl NumValue for CollateralDamagePotential {
+    fn num_value(&self) -> f64 {
+        match self {
+            CollateralDamagePotential::NotDefined => 0.0,
+            CollateralDamagePotential::None => 0.0,
+            CollateralDamagePotential::Low => 0.1,
+            CollateralDamagePotential::LowMedium => 0.3,
+            CollateralDamagePotential::MediumHigh => 0.4,
+            CollateralDamagePotential::High => 0.5,
+        }
+    }
+}
+
 impl Optional for CollateralDamagePotential {
     fn is_undefined(&self) -> bool {
         match self {
@@ -105,6 +118,18 @@ impl str::FromStr for TargetDistribution {
             "L" => Ok(TargetDistribution::Low),
             "N" => Ok(TargetDistribution::None),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for TargetDistribution {
+    fn num_value(&self) -> f64 {
+        match self {
+            TargetDistribution::NotDefined => 1.0,
+            TargetDistribution::High => 1.0,
+            TargetDistribution::Medium => 0.75,
+            TargetDistribution::Low => 0.25,
+            TargetDistribution::None => 0.0,
         }
     }
 }
@@ -143,6 +168,17 @@ impl str::FromStr for ConfidentialityRequirement {
     }
 }
 
+impl NumValue for ConfidentialityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            ConfidentialityRequirement::NotDefined => 1.0,
+            ConfidentialityRequirement::High => 1.51,
+            ConfidentialityRequirement::Medium => 1.0,
+            ConfidentialityRequirement::Low => 0.5,
+        }
+    }
+}
+
 impl Optional for ConfidentialityRequirement {
     fn is_undefined(&self) -> bool {
         match self {
@@ -177,6 +213,17 @@ impl str::FromStr for IntegrityRequirement {
     }
 }
 
+impl NumValue for IntegrityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            IntegrityRequirement::NotDefined => 1.0,
+            IntegrityRequirement::High => 1.51,
+            IntegrityRequirement::Medium => 1.0,
+            IntegrityRequirement::Low => 0.5,
+        }
+    }
+}
+
 impl Optional for IntegrityRequirement {
     fn is_undefined(&self) -> bool {
         match self {
@@ -207,6 +254,17 @@ impl str::FromStr for AvailabilityRequirement {
             "M" => Ok(AvailabilityRequirement::Medium),
             "L" => Ok(AvailabilityRequirement::Low),
             _ => Err(ParseError::IncorrectValue),
+        }
+    }
+}
+
+impl NumValue for AvailabilityRequirement {
+    fn num_value(&self) -> f64 {
+        match self {
+            AvailabilityRequirement::NotDefined => 1.0,
+            AvailabilityRequirement::High => 1.51,
+            AvailabilityRequirement::Medium => 1.0,
+            AvailabilityRequirement::Low => 0.5,
         }
     }
 }

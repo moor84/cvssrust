@@ -1,47 +1,65 @@
-use cvssrust::{CVSSScore, Severity, CVSS};
+use cvssrust::{CVSSScore, Severity, V2Vector};
+use std::str::FromStr;
 
-#[test]
-fn test_parse_vectors_v2() {
-    let vulns_v2 = [
-        // https://nvd.nist.gov/vuln/detail/CVE-2020-0601
-        (
-            "AV:N/AC:M/Au:N/C:P/I:P/A:N",
-            5.8,
-            Severity::Medium,
-            0.0,
-            0.0,
-        ),
-        // https://nvd.nist.gov/vuln/detail/CVE-2014-0011
-        ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 0.0, 0.0),
-        // https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR)
-        (
-            "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR",
-            6.7,
-            Severity::Medium,
-            0.0,
-            0.0,
-        ),
-        // https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M)
-        (
-            "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M",
-            6.7,
-            Severity::Medium,
-            0.0,
-            0.0,
-        ),
-    ];
-
-    for (vector, expected_base_score, expected_severity, expected_temp_score, expected_env_score) in
-        vulns_v2.iter()
-    {
-        if let Ok(CVSS::V2(cvss)) = CVSS::parse(vector) {
-            assert_eq!(cvss.to_string(), String::from(*vector));
-            assert_eq!(cvss.base_score().value(), *expected_base_score);
-            assert_eq!(cvss.base_score().severity(), *expected_severity);
-            assert_eq!(cvss.temporal_score().value(), *expected_temp_score);
-            assert_eq!(cvss.environmental_score().value(), *expected_env_score);
-        } else {
-            panic!("Parsing error")
+macro_rules! test_v2 {
+    ($name:ident, $params:expr) => {
+        #[test]
+        fn $name() {
+            let (
+                vector,
+                expected_base_score,
+                expected_severity,
+                expected_temp_score,
+                expected_env_score,
+            ) = $params;
+            let cvss = V2Vector::from_str(vector).unwrap();
+            assert_eq!(cvss.to_string(), String::from(vector));
+            assert_eq!(cvss.base_score().value(), expected_base_score);
+            assert_eq!(cvss.base_score().severity(), expected_severity);
+            assert_eq!(cvss.temporal_score().value(), expected_temp_score);
+            assert_eq!(cvss.environmental_score().value(), expected_env_score);
         }
-    }
+    };
 }
+
+// https://nvd.nist.gov/vuln/detail/CVE-2020-0601
+test_v2!(
+    test_v2_cve_2020_0601,
+    (
+        "AV:N/AC:M/Au:N/C:P/I:P/A:N",
+        5.8,
+        Severity::Medium,
+        5.8,
+        5.8,
+    )
+);
+
+// https://nvd.nist.gov/vuln/detail/CVE-2014-0011
+test_v2!(
+    test_v2_cve_2014_0011,
+    ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 7.5, 7.5)
+);
+
+// https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR)
+test_v2!(
+    test_v2_example_1,
+    (
+        "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR",
+        6.7,
+        Severity::Medium,
+        5.5, // 5.4!
+        5.5, // 5.4
+    )
+);
+
+// https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M)
+test_v2!(
+    test_v2_example_2,
+    (
+        "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M",
+        6.7,
+        Severity::Medium,
+        5.5, // 5.4!
+        6.9, // 6.8
+    )
+);
