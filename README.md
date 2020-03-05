@@ -4,7 +4,7 @@
 
 Rust implementation of the Common Vulnerability Scoring System (v2 / v3.0 / v3.1).
 
-Supports parsing, generation and score calculation for CVSS vectors v2/v3.0/v3.1
+Supports parsing, generation and score calculation (base, temporal, environmental) for CVSS vectors v2/v3.0/v3.1
 
 Current CVSS version is v3.1, but v3.0 and v2 are still in use.
 
@@ -36,5 +36,5 @@ https://www.first.org/cvss/v3.0/specification-document
 https://www.first.org/cvss/v2/guide
 
 ## Known issues:
-Rounding issue where v2 scores in soma cases are 0.1 off, see https://github.com/moor84/cvssrust/issues/10.
+Rounding issue where v2 scores in some cases are off by 0.1, see https://github.com/moor84/cvssrust/issues/10.
 Does not affect v3 as there's a different rounding function.
