@@ -30,14 +30,14 @@ test_v2!(
         5.8,
         Severity::Medium,
         5.8,
-        0.0,
+        5.8,
     )
 );
 
 // https://nvd.nist.gov/vuln/detail/CVE-2014-0011
 test_v2!(
     test_v2_cve_2014_0011,
-    ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 7.5, 0.0)
+    ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 7.5, 7.5)
 );
 
 // https://nvd.nist.gov/vuln-metrics/cvss/v2-calculator?vector=(AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR)
@@ -48,7 +48,7 @@ test_v2!(
         6.7,
         Severity::Medium,
         5.5, // 5.4!
-        0.0,
+        5.5, // 5.4
     )
 );
 
@@ -60,6 +60,6 @@ test_v2!(
         6.7,
         Severity::Medium,
         5.5, // 5.4!
-        0.0,
+        6.9, // 6.8
     )
 );
