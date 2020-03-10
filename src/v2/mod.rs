@@ -10,20 +10,20 @@ use std::str::FromStr;
 
 #[derive(Debug)]
 /// CVSS vector version v2
-/// 
+///
 /// ```
 /// use cvssrust::{V2Vector, CVSSScore};
 /// use std::str::FromStr;
-/// 
+///
 /// let cvss_str = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
 /// let cvss = V2Vector::from_str(cvss_str).unwrap();
-/// 
+///
 /// assert_eq!(cvss.to_string(), String::from(cvss_str));
 /// assert_eq!(cvss.base_score().value(), 6.7);
 /// assert_eq!(cvss.base_score().severity().to_string(), "Medium");
 /// assert_eq!(cvss.temporal_score().value(), 5.5);
 /// ```
-/// 
+///
 pub struct V2Vector {
     pub access_vector: base::AccessVector,
     pub access_complexity: base::AccessComplexity,
@@ -74,7 +74,7 @@ impl V2Vector {
     }
 
     fn as_string(&self) -> String {
-        let mut vector = String::from("");
+        let mut vector = String::new();
 
         append_metric(&mut vector, "AV", &self.access_vector);
         append_metric(&mut vector, "AC", &self.access_complexity);
@@ -98,10 +98,18 @@ impl V2Vector {
 
     /// Parse a CVSS 2 string and return V2Vector.
     // TODO: check for invalid(unknown) metrics
-    // TODO: remove round brackets ()
     #[rustfmt::skip]
     fn parse(cvss_str: &str) -> Result<Self, ParseError> {
-        let parsed = parse_metrics(cvss_str)?;
+        let cvss_string = String::from(cvss_str);
+
+        // Remove round brackets ()
+        let cvss_str_clean = if cvss_string.starts_with('(') && cvss_string.ends_with(')') {
+            &cvss_string[1..cvss_string.len() - 1]
+        } else {
+            cvss_string.as_str()
+        };
+
+        let parsed = parse_metrics(cvss_str_clean)?;
 
         let access_vector =          base::AccessVector          ::from_str(parsed.get("AV").ok_or_else(|| ParseError::Missing)?)?;
         let access_complexity =      base::AccessComplexity      ::from_str(parsed.get("AC").ok_or_else(|| ParseError::Missing)?)?;
@@ -163,10 +171,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
     fn test_parse_v2_brackets() {
-        let cvss_str = "(AV:N/AC:M/Au:N/C:P/I:P/A:N)";
-        V2Vector::from_str(cvss_str).unwrap();
+        let vector = V2Vector::from_str("(AV:N/AC:M/Au:N/C:P/I:P/A:N)").unwrap();
+        assert_eq!(vector.to_string(), "AV:N/AC:M/Au:N/C:P/I:P/A:N");
     }
 
     #[test]
@@ -178,23 +185,56 @@ mod tests {
         assert_eq!(vector.access_vector, base::AccessVector::AdjacentNetwork);
         assert_eq!(vector.access_complexity, base::AccessComplexity::Low);
         assert_eq!(vector.authentication, base::Authentication::Single);
-        assert_eq!(vector.confidentiality_impact, base::ConfidentialityImpact::Partial);
+        assert_eq!(
+            vector.confidentiality_impact,
+            base::ConfidentialityImpact::Partial
+        );
         assert_eq!(vector.integrity_impact, base::IntegrityImpact::Partial);
-        assert_eq!(vector.availability_impact, base::AvailabilityImpact::Complete);
-        assert_eq!(vector.exploitability, temporal::Exploitability::ProofOfConcept);
-        assert_eq!(vector.remediation_level, temporal::RemediationLevel::Workaround);
-        assert_eq!(vector.report_confidence, temporal::ReportConfidence::Uncorroborated);
-        assert_eq!(vector.collateral_damage_potential, env::CollateralDamagePotential::LowMedium);
+        assert_eq!(
+            vector.availability_impact,
+            base::AvailabilityImpact::Complete
+        );
+        assert_eq!(
+            vector.exploitability,
+            temporal::Exploitability::ProofOfConcept
+        );
+        assert_eq!(
+            vector.remediation_level,
+            temporal::RemediationLevel::Workaround
+        );
+        assert_eq!(
+            vector.report_confidence,
+            temporal::ReportConfidence::Uncorroborated
+        );
+        assert_eq!(
+            vector.collateral_damage_potential,
+            env::CollateralDamagePotential::LowMedium
+        );
         assert_eq!(vector.target_distribution, env::TargetDistribution::High);
-        assert_eq!(vector.confidentiality_requirement, env::ConfidentialityRequirement::Medium);
-        assert_eq!(vector.integrity_requirement, env::IntegrityRequirement::Medium);
-        assert_eq!(vector.availability_requirement, env::AvailabilityRequirement::Medium);
+        assert_eq!(
+            vector.confidentiality_requirement,
+            env::ConfidentialityRequirement::Medium
+        );
+        assert_eq!(
+            vector.integrity_requirement,
+            env::IntegrityRequirement::Medium
+        );
+        assert_eq!(
+            vector.availability_requirement,
+            env::AvailabilityRequirement::Medium
+        );
     }
 
     #[test]
     #[should_panic]
     fn test_parse_not_a_vector() {
         V2Vector::from_str("Blablabla").unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_parse_only_one_bracket() {
+        V2Vector::from_str("(AV:N/AC:M/Au:N/C:P/I:P/A:N").unwrap();
     }
 
     #[test]

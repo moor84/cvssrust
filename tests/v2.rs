@@ -43,13 +43,7 @@ test_v2!(
 // https://nvd.nist.gov/vuln/detail/CVE-2019-11510
 test_v2!(
     test_v2_cve_2019_11510,
-    (
-        "AV:N/AC:L/Au:N/C:P/I:P/A:P",
-        7.5,
-        Severity::High,
-        7.5,
-        7.5,
-    )
+    ("AV:N/AC:L/Au:N/C:P/I:P/A:P", 7.5, Severity::High, 7.5, 7.5,)
 );
 
 // https://nvd.nist.gov/vuln/detail/CVE-2019-15001
