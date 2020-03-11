@@ -1,4 +1,5 @@
-use cvssrust::{CVSSScore, Severity, V2Vector};
+use cvssrust::v2::V2Vector;
+use cvssrust::{CVSSScore, Severity};
 use std::str::FromStr;
 
 macro_rules! test_v2 {

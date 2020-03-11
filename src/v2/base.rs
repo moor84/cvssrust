@@ -1,3 +1,5 @@
+//! CVSS v2 base metrics
+
 use crate::common::{AsStr, NumValue, ParseError};
 use std::str;
 

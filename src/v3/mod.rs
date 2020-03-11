@@ -1,3 +1,5 @@
+//! CVSS v3.0/v3.1 implementation
+
 pub mod base;
 pub mod env;
 pub mod score;
@@ -42,7 +44,8 @@ impl AsStr for MinorVersion {
 /// CVSS vector version 3.0/3.1
 /// 
 /// ```
-/// use cvssrust::{V3Vector, CVSSScore};
+/// use cvssrust::v3::V3Vector;
+/// use cvssrust::CVSSScore;
 /// use std::str::FromStr;
 /// 
 /// let cvss_str = "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:P/RL:W/RC:C";
@@ -84,6 +87,7 @@ pub struct V3Vector {
 }
 
 impl V3Vector {
+    /// Constructor
     #[rustfmt::skip]
     pub fn new(
         attack_vector: base::AttackVector, attack_complexity: base::AttackComplexity,

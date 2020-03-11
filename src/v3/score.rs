@@ -1,3 +1,5 @@
+//! CVSS v3 scores implementation
+
 use super::{base, env, MinorVersion, V3Vector};
 use crate::common::{CVSSScore, NumValue, Optional, Score};
 
@@ -93,6 +95,7 @@ impl V3Vector {
         }
     }
 
+    /// Calculate Modified Impact SubScore
     pub fn modified_impact_subscore(&self) -> Score {
         let mod_conf = if !self.modified_confidentiality.is_undefined() {
             self.modified_confidentiality.num_value()
@@ -116,6 +119,7 @@ impl V3Vector {
         Score::from(miss.min(0.915))
     }
 
+    /// Calculate Modified Impact Score
     pub fn modified_impact_score(&self) -> Score {
         let scope_changed = self.modified_scope_changed();
         let miss = self.modified_impact_subscore().value();
@@ -131,6 +135,7 @@ impl V3Vector {
         Score::from(impact)
     }
 
+    /// Calculate Modified Exploitability Score
     pub fn modified_exploitability_score(&self) -> Score {
         let scope_changed = self.modified_scope_changed();
         let mod_av = if !self.modified_attack_vector.is_undefined() {

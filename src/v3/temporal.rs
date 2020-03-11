@@ -1,3 +1,5 @@
+//! CVSS v3 temporal metrics
+
 use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
