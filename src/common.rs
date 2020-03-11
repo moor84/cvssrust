@@ -4,12 +4,22 @@ use std::fmt;
 pub const METRIC_DELIM: char = ':';
 pub const VECTOR_DELIM: char = '/';
 
+/// CVSS Score implementation: Base/Temporal/Environmental
 pub trait CVSSScore {
-    fn impact_score(&self) -> Score;
-    fn expoitability_score(&self) -> Score;
+    /// Calculate CVSS Base Score
     fn base_score(&self) -> Score;
+    
+    /// Calculate CVSS Temporal Score
     fn temporal_score(&self) -> Score;
+    
+    /// Calculate CVSS Environmental Score
     fn environmental_score(&self) -> Score;
+
+    /// Calculate Impact Sub Score
+    fn impact_score(&self) -> Score;
+    
+    /// Calculate Exploitability Score
+    fn expoitability_score(&self) -> Score;
 }
 
 /// Base/Temporal/Environmental CVSS Score
@@ -81,6 +91,7 @@ impl fmt::Display for Severity {
     }
 }
 
+/// Parsing error type
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParseError {
     MalformedVector,

@@ -1,3 +1,5 @@
+//! CVSS v2 implementation
+
 pub mod base;
 pub mod env;
 pub mod score;
@@ -12,7 +14,8 @@ use std::str::FromStr;
 /// CVSS vector version v2
 ///
 /// ```
-/// use cvssrust::{V2Vector, CVSSScore};
+/// use cvssrust::v2::V2Vector;
+/// use cvssrust::CVSSScore;
 /// use std::str::FromStr;
 ///
 /// let cvss_str = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
@@ -44,6 +47,7 @@ pub struct V2Vector {
 }
 
 impl V2Vector {
+    /// Constructor
     #[rustfmt::skip]
     pub fn new(
         access_vector: base::AccessVector,

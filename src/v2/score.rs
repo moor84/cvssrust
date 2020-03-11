@@ -1,3 +1,5 @@
+//! CVSS v2 scores implementation
+
 use super::V2Vector;
 use crate::common::{CVSSScore, NumValue, Score};
 

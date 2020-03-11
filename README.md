@@ -10,7 +10,8 @@ Current CVSS version is v3.1, but v3.0 and v2 are still in use.
 
 ## Example
 ```rust
-use cvssrust::{V3Vector, CVSSScore};
+use cvssrust::v3::V3Vector;
+use cvssrust::CVSSScore;
 use std::str::FromStr;
 
 let cvss_str = "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:P/RL:W/RC:C";
