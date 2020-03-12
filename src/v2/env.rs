@@ -3,6 +3,7 @@
 use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum CollateralDamagePotential {
     None,
@@ -13,6 +14,7 @@ pub enum CollateralDamagePotential {
     NotDefined,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum TargetDistribution {
     None,
@@ -22,6 +24,7 @@ pub enum TargetDistribution {
     NotDefined,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ConfidentialityRequirement {
     NotDefined,
@@ -30,6 +33,7 @@ pub enum ConfidentialityRequirement {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum IntegrityRequirement {
     NotDefined,
@@ -38,6 +42,7 @@ pub enum IntegrityRequirement {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AvailabilityRequirement {
     NotDefined,

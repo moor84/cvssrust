@@ -3,6 +3,7 @@
 use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ConfidentialityRequirement {
     NotDefined,
@@ -11,6 +12,7 @@ pub enum ConfidentialityRequirement {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum IntegrityRequirement {
     NotDefined,
@@ -19,6 +21,7 @@ pub enum IntegrityRequirement {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AvailabilityRequirement {
     NotDefined,
@@ -27,6 +30,7 @@ pub enum AvailabilityRequirement {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedAttackVector {
     NotDefined,
@@ -36,6 +40,7 @@ pub enum ModifiedAttackVector {
     Physical,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedAttackComplexity {
     NotDefined,
@@ -43,6 +48,7 @@ pub enum ModifiedAttackComplexity {
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedPrivilegesRequired {
     NotDefined,
@@ -51,6 +57,7 @@ pub enum ModifiedPrivilegesRequired {
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedUserInteraction {
     NotDefined,
@@ -58,6 +65,7 @@ pub enum ModifiedUserInteraction {
     Required,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedScope {
     NotDefined,
@@ -65,6 +73,7 @@ pub enum ModifiedScope {
     Changed,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedConfidentiality {
     NotDefined,
@@ -73,6 +82,7 @@ pub enum ModifiedConfidentiality {
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedIntegrity {
     NotDefined,
@@ -81,6 +91,7 @@ pub enum ModifiedIntegrity {
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ModifiedAvailability {
     NotDefined,
