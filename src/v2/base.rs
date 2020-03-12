@@ -1,9 +1,5 @@
 //! CVSS v2 base metrics
 
-#[cfg(feature = "serde")]
-#[macro_use]
-extern crate serde;
-
 use crate::common::{AsStr, NumValue, ParseError};
 use std::str;
 

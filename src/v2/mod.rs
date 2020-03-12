@@ -1,9 +1,5 @@
 //! CVSS v2 implementation
 
-#[cfg(feature = "serde")]
-#[macro_use]
-extern crate serde;
-
 pub mod base;
 pub mod env;
 pub mod score;

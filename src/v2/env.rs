@@ -1,9 +1,5 @@
 //! CVSS v2 environmental metrics
 
-#[cfg(feature = "serde")]
-#[macro_use]
-extern crate serde;
-
 use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 

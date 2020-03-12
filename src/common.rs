@@ -23,6 +23,7 @@ pub trait CVSSScore {
 }
 
 /// Base/Temporal/Environmental CVSS Score
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
 pub struct Score(f64);
 
@@ -49,6 +50,7 @@ impl From<Score> for f64 {
 }
 
 /// Qualitative Severity Rating Scale
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, Clone, PartialEq)]
 pub enum Severity {
     None,
@@ -93,6 +95,7 @@ impl fmt::Display for Severity {
 
 /// Parsing error type
 #[derive(Debug, Clone, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum ParseError {
     MalformedVector,
     Missing,
