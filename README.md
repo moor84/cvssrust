@@ -1,6 +1,7 @@
 # Rust CVSS
 
 ![Rust](https://github.com/moor84/cvssrust/workflows/Rust/badge.svg)
+[![Crate](https://img.shields.io/crates/v/cvssrust)](https://crates.io/crates/cvssrust)
 
 Rust implementation of the Common Vulnerability Scoring System (v2 / v3.0 / v3.1).
 
@@ -38,4 +39,5 @@ https://www.first.org/cvss/v2/guide
 
 ## Known issues:
 Rounding issue where v2 temporal/environmental (but not base) scores in some cases are off by 0.1, see https://github.com/moor84/cvssrust/issues/10.
+
 Does not affect v3 as there's a different rounding function.
