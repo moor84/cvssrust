@@ -1,12 +1,14 @@
 [package]
 name = "cvssrust"
 description = "Rust implementation of the Common Vulnerability Scoring System (v2 / v3.0 / v3.1)"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Mikhail Medvedev <moorck84@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/moor84/cvssrust"
 readme = "README.md"
 keywords = ["security", "vulnerability", "cvss", "cvssv2", "cvssv3"]
+categories = ["encoding", "parsing"]
+homepage = "https://crates.io/crates/cvssrust"
 edition = "2018"
 
 [dependencies]
