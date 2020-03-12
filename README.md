@@ -37,5 +37,5 @@ https://www.first.org/cvss/v3.0/specification-document
 https://www.first.org/cvss/v2/guide
 
 ## Known issues:
-Rounding issue where v2 scores in some cases are off by 0.1, see https://github.com/moor84/cvssrust/issues/10.
+Rounding issue where v2 temporal/environmental (but not base) scores in some cases are off by 0.1, see https://github.com/moor84/cvssrust/issues/10.
 Does not affect v3 as there's a different rounding function.
