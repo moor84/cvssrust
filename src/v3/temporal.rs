@@ -1,8 +1,13 @@
 //! CVSS v3 temporal metrics
 
+#[cfg(feature = "serde")]
+#[macro_use]
+extern crate serde;
+
 use crate::common::{AsStr, NumValue, Optional, ParseError};
 use std::str;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ExploitCodeMaturity {
     NotDefined,
@@ -12,6 +17,7 @@ pub enum ExploitCodeMaturity {
     Unproven,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum RemediationLevel {
     NotDefined,
@@ -21,6 +27,7 @@ pub enum RemediationLevel {
     OfficialFix,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ReportConfidence {
     NotDefined,
