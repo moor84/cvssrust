@@ -3,6 +3,7 @@
 use crate::common::{AsStr, NumValue, ParseError};
 use std::str;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AttackVector {
     Network,
@@ -11,12 +12,14 @@ pub enum AttackVector {
     Physical,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AttackComplexity {
     Low,
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum PrivilegesRequired {
     None,
@@ -24,18 +27,21 @@ pub enum PrivilegesRequired {
     High,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum UserInteraction {
     None,
     Required,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum Scope {
     Unchanged,
     Changed,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum Confidentiality {
     High,
@@ -43,6 +49,7 @@ pub enum Confidentiality {
     None,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum Integrity {
     High,
@@ -50,6 +57,7 @@ pub enum Integrity {
     None,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum Availability {
     High,

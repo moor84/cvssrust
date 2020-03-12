@@ -3,6 +3,7 @@
 use crate::common::{AsStr, NumValue, ParseError};
 use std::str;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AccessVector {
     Local,
@@ -10,6 +11,7 @@ pub enum AccessVector {
     Network,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AccessComplexity {
     High,
@@ -17,6 +19,7 @@ pub enum AccessComplexity {
     Low,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum Authentication {
     Multiple,
@@ -24,6 +27,7 @@ pub enum Authentication {
     None,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum ConfidentialityImpact {
     None,
@@ -31,6 +35,7 @@ pub enum ConfidentialityImpact {
     Complete,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum IntegrityImpact {
     None,
@@ -38,6 +43,7 @@ pub enum IntegrityImpact {
     Complete,
 }
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum AvailabilityImpact {
     None,

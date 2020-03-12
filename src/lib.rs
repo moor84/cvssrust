@@ -25,6 +25,10 @@ mod common;
 pub mod v2;
 pub mod v3;
 
+#[cfg(feature = "serde")]
+#[macro_use]
+extern crate serde;
+
 pub use common::{CVSSScore, ParseError, Score, Severity};
 pub use std::fmt::Display;
 pub use std::str::FromStr;

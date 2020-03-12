@@ -10,6 +10,7 @@ use std::fmt;
 use std::fmt::Display;
 use std::str::FromStr;
 
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug, PartialEq)]
 pub enum MinorVersion {
     V0 = 0,
@@ -40,6 +41,7 @@ impl AsStr for MinorVersion {
 }
 
 #[rustfmt::skip]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Debug)]
 /// CVSS vector version 3.0/3.1
 /// 
