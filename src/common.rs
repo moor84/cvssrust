@@ -64,10 +64,10 @@ impl Severity {
     fn from(s: f64) -> Severity {
         match s {
             s if s < 0.1 => Severity::None,
-            s if s >= 0.1 && s <= 3.9 => Severity::Low,
-            s if s >= 4.0 && s <= 6.9 => Severity::Medium,
-            s if s >= 7.0 && s <= 8.9 => Severity::High,
-            s if s > 8.9 => Severity::Critical,
+            s if s >= 0.1 && s < 4.0 => Severity::Low,
+            s if s >= 4.0 && s < 7.0 => Severity::Medium,
+            s if s >= 7.0 && s < 9.0 => Severity::High,
+            s if s >= 9.0 => Severity::Critical,
             _ => Severity::Critical,
         }
     }
@@ -176,7 +176,9 @@ mod tests {
     fn test_severity_from_score() {
         assert_eq!(Severity::from_score(Score(0.0)), Severity::None);
         assert_eq!(Severity::from_score(Score(3.9)), Severity::Low);
+        assert_eq!(Severity::from_score(Score(3.95)), Severity::Low);
         assert_eq!(Severity::from_score(Score(4.0)), Severity::Medium);
+        assert_eq!(Severity::from_score(Score(4.01)), Severity::Medium);
         assert_eq!(Severity::from_score(Score(7.89)), Severity::High);
         assert_eq!(Severity::from_score(Score(9.12)), Severity::Critical);
         assert_eq!(Severity::from_score(Score(102.3)), Severity::Critical);
