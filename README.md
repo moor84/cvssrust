@@ -18,10 +18,12 @@ use std::str::FromStr;
 let cvss_str = "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:P/RL:W/RC:C";
 let cvss = V3Vector::from_str(cvss_str).unwrap();
 
+// https://www.first.org/cvss/calculator/3.1#CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N/E:P/RL:W/RC:C
 assert_eq!(cvss.to_string(), String::from(cvss_str));
 assert_eq!(cvss.base_score().value(), 6.1);
 assert_eq!(cvss.base_score().severity().to_string(), "Medium");
 assert_eq!(cvss.temporal_score().value(), 5.6);
+assert_eq!(cvss.environmental_score().value(), 5.6);
 ```
 
 ## CVSS v3.1 specification:
