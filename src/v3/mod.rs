@@ -96,8 +96,8 @@ impl V3Vector {
         privileges_required: base::PrivilegesRequired, user_interaction: base::UserInteraction,
         scope: base::Scope, confidentiality: base::Confidentiality, integrity: base::Integrity,
         availability: base::Availability
-    ) -> V3Vector {
-        V3Vector{
+    ) -> Self {
+        Self {
             minor_version:                  MinorVersion::V1,
 
             attack_vector,
@@ -177,7 +177,7 @@ impl V3Vector {
         let availability =          base::Availability      ::from_str(parsed.get("A").ok_or_else(|| ParseError::Missing)?)?;
 
         // Create a vector
-        let mut vector = V3Vector::new(
+        let mut vector = Self::new(
             attack_vector,
             attack_complexity,
             privileges_required,

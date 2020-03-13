@@ -8,16 +8,16 @@ pub const VECTOR_DELIM: char = '/';
 pub trait CVSSScore {
     /// Calculate CVSS Base Score
     fn base_score(&self) -> Score;
-    
+
     /// Calculate CVSS Temporal Score
     fn temporal_score(&self) -> Score;
-    
+
     /// Calculate CVSS Environmental Score
     fn environmental_score(&self) -> Score;
 
     /// Calculate Impact Sub Score
     fn impact_score(&self) -> Score;
-    
+
     /// Calculate Exploitability Score
     fn expoitability_score(&self) -> Score;
 }

@@ -57,8 +57,8 @@ impl V2Vector {
         confidentiality_impact: base::ConfidentialityImpact,
         integrity_impact: base::IntegrityImpact,
         availability_impact: base::AvailabilityImpact,
-    ) -> V2Vector {
-        V2Vector{
+    ) -> Self {
+        Self {
             access_vector,
             access_complexity,
             authentication,
@@ -124,7 +124,7 @@ impl V2Vector {
         let availability_impact =    base::AvailabilityImpact    ::from_str(parsed.get("A").ok_or_else(|| ParseError::Missing)?)?;
 
         // Create a vector
-        let mut vector = V2Vector::new(
+        let mut vector = Self::new(
             access_vector,
             access_complexity,
             authentication,
