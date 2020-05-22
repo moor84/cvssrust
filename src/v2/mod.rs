@@ -11,7 +11,7 @@ use std::fmt::Display;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 /// CVSS vector version v2
 ///
 /// ```
@@ -228,6 +228,18 @@ mod tests {
             vector.availability_requirement,
             env::AvailabilityRequirement::Medium
         );
+    }
+
+    #[test]
+    fn test_partial_eq() {
+        let cvss_str = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
+        let vector = V2Vector::from_str(cvss_str).unwrap();
+        let other = "AV:A/AC:L/Au:S/C:P/I:P/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
+        let other_vector = V2Vector::from_str(other).unwrap();
+        let different_str = "AV:A/AC:L/Au:S/C:P/I:C/A:C/E:POC/RL:W/RC:UR/CDP:LM/TD:H/CR:M/IR:M/AR:M";
+        let different_vector = V2Vector::from_str(different_str).unwrap();
+        assert_eq!(vector, other_vector);
+        assert_ne!(vector, different_vector);
     }
 
     #[test]

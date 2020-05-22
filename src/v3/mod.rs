@@ -42,7 +42,7 @@ impl AsStr for MinorVersion {
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 /// CVSS vector version 3.0/3.1
 /// 
 /// ```
@@ -263,6 +263,15 @@ mod tests {
             vector.report_confidence,
             temporal::ReportConfidence::Confirmed
         );
+    }
+
+    #[test]
+    fn test_partial_eq() {
+        let vector = V3Vector::from_str("CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N").unwrap();
+        let other_vector = V3Vector::from_str("CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N").unwrap();
+        let different_vector = V3Vector::from_str("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:L/I:L/A:N").unwrap();
+        assert_eq!(vector, other_vector);
+        assert_ne!(vector, different_vector);
     }
 
     #[test]
