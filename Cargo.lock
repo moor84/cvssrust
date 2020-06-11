@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 [[package]]
 name = "cvssrust"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
