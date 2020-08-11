@@ -64,7 +64,7 @@ impl CVSS {
         S: AsRef<str>,
     {
         V3Vector::from_str(cvss_str.as_ref())
-            .and_then(|v3| Ok(CVSS::V3(v3)))
-            .or_else(|_| V2Vector::from_str(cvss_str.as_ref()).and_then(|v2| Ok(CVSS::V2(v2))))
+            .map(CVSS::V3)
+            .or_else(|_| V2Vector::from_str(cvss_str.as_ref()).map(CVSS::V2))
     }
 }

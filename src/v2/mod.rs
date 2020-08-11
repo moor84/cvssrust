@@ -147,6 +147,39 @@ impl V2Vector {
 
         Ok(vector)
     }
+
+    /// Parse the temporal fields in `temporal_str`, adding them to the `V2Vector`.
+    ///
+    /// ```
+    /// use cvssrust::v2::V2Vector;
+    /// use cvssrust::v2::temporal::{Exploitability, RemediationLevel, ReportConfidence};
+    /// use std::str::FromStr;
+    ///
+    /// let cvss_base = "AV:A/AC:L/Au:S/C:P/I:P/A:C";
+    /// let cvss_temporal = "E:POC/RL:W/RC:UR";
+    ///
+    /// let mut cvss = V2Vector::from_str(cvss_base).unwrap();
+    /// assert_eq!(cvss.exploitability, Exploitability::NotDefined);
+    /// assert_eq!(cvss.remediation_level, RemediationLevel::NotDefined);
+    /// assert_eq!(cvss.report_confidence, ReportConfidence::NotDefined);
+    ///
+    /// cvss.extend_with_temporal(cvss_temporal).unwrap();
+    /// assert_eq!(cvss.exploitability, Exploitability::ProofOfConcept);
+    /// assert_eq!(cvss.remediation_level, RemediationLevel::Workaround);
+    /// assert_eq!(cvss.report_confidence, ReportConfidence::Uncorroborated);
+    /// ```
+    #[rustfmt::skip]
+    pub fn extend_with_temporal(&mut self, temporal_str: &str) -> Result<(), ParseError> {
+        let parsed = parse_metrics(temporal_str)?;
+
+        const ND: &str = "ND";
+
+        self.exploitability =    temporal::Exploitability   ::from_str(parsed.get("E").unwrap_or(&ND))?;
+        self.remediation_level = temporal::RemediationLevel ::from_str(parsed.get("RL").unwrap_or(&ND))?;
+        self.report_confidence = temporal::ReportConfidence ::from_str(parsed.get("RC").unwrap_or(&ND))?;
+
+        Ok(())
+    }
 }
 
 impl Display for V2Vector {
