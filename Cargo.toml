@@ -15,5 +15,5 @@ edition = "2018"
 serde = { version = "1.0", optional = true, features = ["derive"] }
 
 [features]
-default = []
-serde = ["serde"]
+default = ["ser"]
+ser = ["serde"]
