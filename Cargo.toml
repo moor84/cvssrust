@@ -1,7 +1,7 @@
 [package]
 name = "cvssrust"
 description = "Rust implementation of the Common Vulnerability Scoring System (v2 / v3.0 / v3.1)"
-version = "1.0.1"
+version = "2.0.0"
 authors = ["Mikhail Medvedev <moorck84@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/moor84/cvssrust"
@@ -13,3 +13,7 @@ edition = "2018"
 
 [dependencies]
 serde = { version = "1.0", optional = true, features = ["derive"] }
+
+[features]
+default = []
+serde = ["serde"]
