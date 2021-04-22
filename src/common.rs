@@ -51,7 +51,7 @@ impl From<Score> for f64 {
 
 /// Qualitative Severity Rating Scale
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Severity {
     None,
     Low,
@@ -109,10 +109,6 @@ impl fmt::Display for ParseError {
     }
 }
 
-pub trait AsStr {
-    fn as_str(&self) -> &str;
-}
-
 pub trait Optional {
     fn is_undefined(&self) -> bool;
 }
@@ -127,17 +123,17 @@ pub trait NumValue {
 }
 
 /// Append metric and its value to a vector string.
-pub fn append_metric<T: AsStr>(vector: &mut String, metric: &str, value: &T) {
+pub fn append_metric<T: AsRef<str>>(vector: &mut String, metric: &str, value: &T) {
     if !vector.is_empty() {
         vector.push(VECTOR_DELIM);
     }
     vector.push_str(metric);
     vector.push(METRIC_DELIM);
-    vector.push_str(value.as_str());
+    vector.push_str(value.as_ref());
 }
 
 /// Append metric and its value to a vector string if it is not undefined (for optionsl metrics).
-pub fn append_metric_optional<T: AsStr + Optional>(vector: &mut String, metric: &str, value: &T) {
+pub fn append_metric_optional<T: AsRef<str> + Optional>(vector: &mut String, metric: &str, value: &T) {
     if !value.is_undefined() {
         append_metric(vector, metric, value);
     }

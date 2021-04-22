@@ -11,7 +11,7 @@ use std::fmt::Display;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 /// CVSS vector version v2
 ///
 /// ```

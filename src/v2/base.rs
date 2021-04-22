@@ -1,10 +1,10 @@
 //! CVSS v2 base metrics
 
-use crate::common::{AsStr, NumValue, ParseError};
+use crate::common::{NumValue, ParseError};
 use std::str;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AccessVector {
     Local,
     AdjacentNetwork,
@@ -12,7 +12,7 @@ pub enum AccessVector {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AccessComplexity {
     High,
     Medium,
@@ -20,7 +20,7 @@ pub enum AccessComplexity {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Authentication {
     Multiple,
     Single,
@@ -28,7 +28,7 @@ pub enum Authentication {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ConfidentialityImpact {
     None,
     Partial,
@@ -36,7 +36,7 @@ pub enum ConfidentialityImpact {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum IntegrityImpact {
     None,
     Partial,
@@ -44,15 +44,15 @@ pub enum IntegrityImpact {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AvailabilityImpact {
     None,
     Partial,
     Complete,
 }
 
-impl AsStr for AccessVector {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AccessVector {
+    fn as_ref(&self) -> &str {
         match self {
             AccessVector::Local => "L",
             AccessVector::AdjacentNetwork => "A",
@@ -84,8 +84,8 @@ impl NumValue for AccessVector {
     }
 }
 
-impl AsStr for AccessComplexity {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AccessComplexity {
+    fn as_ref(&self) -> &str {
         match self {
             AccessComplexity::High => "H",
             AccessComplexity::Medium => "M",
@@ -117,8 +117,8 @@ impl NumValue for AccessComplexity {
     }
 }
 
-impl AsStr for Authentication {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Authentication {
+    fn as_ref(&self) -> &str {
         match self {
             Authentication::Multiple => "M",
             Authentication::Single => "S",
@@ -150,8 +150,8 @@ impl NumValue for Authentication {
     }
 }
 
-impl AsStr for ConfidentialityImpact {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ConfidentialityImpact {
+    fn as_ref(&self) -> &str {
         match self {
             ConfidentialityImpact::None => "N",
             ConfidentialityImpact::Partial => "P",
@@ -183,8 +183,8 @@ impl NumValue for ConfidentialityImpact {
     }
 }
 
-impl AsStr for IntegrityImpact {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for IntegrityImpact {
+    fn as_ref(&self) -> &str {
         match self {
             IntegrityImpact::None => "N",
             IntegrityImpact::Partial => "P",
@@ -216,8 +216,8 @@ impl NumValue for IntegrityImpact {
     }
 }
 
-impl AsStr for AvailabilityImpact {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AvailabilityImpact {
+    fn as_ref(&self) -> &str {
         match self {
             AvailabilityImpact::None => "N",
             AvailabilityImpact::Partial => "P",

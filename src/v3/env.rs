@@ -1,10 +1,10 @@
 //! CVSS v3 environmental metrics
 
-use crate::common::{AsStr, NumValue, Optional, ParseError};
+use crate::common::{NumValue, Optional, ParseError};
 use std::str;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ConfidentialityRequirement {
     NotDefined,
     High,
@@ -13,7 +13,7 @@ pub enum ConfidentialityRequirement {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum IntegrityRequirement {
     NotDefined,
     High,
@@ -22,7 +22,7 @@ pub enum IntegrityRequirement {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AvailabilityRequirement {
     NotDefined,
     High,
@@ -31,7 +31,7 @@ pub enum AvailabilityRequirement {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedAttackVector {
     NotDefined,
     Network,
@@ -41,7 +41,7 @@ pub enum ModifiedAttackVector {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedAttackComplexity {
     NotDefined,
     Low,
@@ -49,7 +49,7 @@ pub enum ModifiedAttackComplexity {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedPrivilegesRequired {
     NotDefined,
     None,
@@ -58,7 +58,7 @@ pub enum ModifiedPrivilegesRequired {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedUserInteraction {
     NotDefined,
     None,
@@ -66,7 +66,7 @@ pub enum ModifiedUserInteraction {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedScope {
     NotDefined,
     Unchanged,
@@ -74,7 +74,7 @@ pub enum ModifiedScope {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedConfidentiality {
     NotDefined,
     None,
@@ -83,7 +83,7 @@ pub enum ModifiedConfidentiality {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedIntegrity {
     NotDefined,
     None,
@@ -92,7 +92,7 @@ pub enum ModifiedIntegrity {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ModifiedAvailability {
     NotDefined,
     None,
@@ -100,8 +100,8 @@ pub enum ModifiedAvailability {
     High,
 }
 
-impl AsStr for ConfidentialityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ConfidentialityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             ConfidentialityRequirement::NotDefined => "X",
             ConfidentialityRequirement::High => "H",
@@ -145,8 +145,8 @@ impl Optional for ConfidentialityRequirement {
     }
 }
 
-impl AsStr for IntegrityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for IntegrityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             IntegrityRequirement::NotDefined => "X",
             IntegrityRequirement::High => "H",
@@ -190,8 +190,8 @@ impl Optional for IntegrityRequirement {
     }
 }
 
-impl AsStr for AvailabilityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AvailabilityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             AvailabilityRequirement::NotDefined => "X",
             AvailabilityRequirement::High => "H",
@@ -235,8 +235,8 @@ impl Optional for AvailabilityRequirement {
     }
 }
 
-impl AsStr for ModifiedAttackVector {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedAttackVector {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedAttackVector::NotDefined => "X",
             ModifiedAttackVector::Network => "N",
@@ -283,8 +283,8 @@ impl Optional for ModifiedAttackVector {
     }
 }
 
-impl AsStr for ModifiedAttackComplexity {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedAttackComplexity {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedAttackComplexity::NotDefined => "X",
             ModifiedAttackComplexity::Low => "L",
@@ -325,8 +325,8 @@ impl Optional for ModifiedAttackComplexity {
     }
 }
 
-impl AsStr for ModifiedPrivilegesRequired {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedPrivilegesRequired {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedPrivilegesRequired::NotDefined => "X",
             ModifiedPrivilegesRequired::None => "N",
@@ -386,8 +386,8 @@ impl Optional for ModifiedPrivilegesRequired {
     }
 }
 
-impl AsStr for ModifiedUserInteraction {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedUserInteraction {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedUserInteraction::NotDefined => "X",
             ModifiedUserInteraction::None => "N",
@@ -428,8 +428,8 @@ impl Optional for ModifiedUserInteraction {
     }
 }
 
-impl AsStr for ModifiedScope {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedScope {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedScope::NotDefined => "X",
             ModifiedScope::Unchanged => "U",
@@ -460,8 +460,8 @@ impl Optional for ModifiedScope {
     }
 }
 
-impl AsStr for ModifiedConfidentiality {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedConfidentiality {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedConfidentiality::NotDefined => "X",
             ModifiedConfidentiality::High => "H",
@@ -505,8 +505,8 @@ impl Optional for ModifiedConfidentiality {
     }
 }
 
-impl AsStr for ModifiedIntegrity {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedIntegrity {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedIntegrity::NotDefined => "X",
             ModifiedIntegrity::High => "H",
@@ -550,8 +550,8 @@ impl Optional for ModifiedIntegrity {
     }
 }
 
-impl AsStr for ModifiedAvailability {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ModifiedAvailability {
+    fn as_ref(&self) -> &str {
         match self {
             ModifiedAvailability::NotDefined => "X",
             ModifiedAvailability::High => "H",

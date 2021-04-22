@@ -5,13 +5,13 @@ pub mod env;
 pub mod score;
 pub mod temporal;
 
-use super::common::{append_metric, append_metric_optional, parse_metrics, AsStr, ParseError};
+use super::common::{append_metric, append_metric_optional, parse_metrics, ParseError};
 use std::fmt;
 use std::fmt::Display;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd, Ord, Hash)]
 pub enum MinorVersion {
     V0 = 0,
     V1 = 1,
@@ -31,8 +31,8 @@ impl FromStr for MinorVersion {
     }
 }
 
-impl AsStr for MinorVersion {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for MinorVersion {
+    fn as_ref(&self) -> &str {
         match self {
             MinorVersion::V0 => "CVSS:3.0",
             MinorVersion::V1 => "CVSS:3.1",
@@ -42,7 +42,7 @@ impl AsStr for MinorVersion {
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 /// CVSS vector version 3.0/3.1
 /// 
 /// ```
@@ -129,7 +129,7 @@ impl V3Vector {
     }
 
     fn as_string(&self) -> String {
-        let mut vector = String::from(self.minor_version.as_str());
+        let mut vector = String::from(self.minor_version.as_ref());
 
         append_metric(&mut vector, "AV", &self.attack_vector);
         append_metric(&mut vector, "AC", &self.attack_complexity);

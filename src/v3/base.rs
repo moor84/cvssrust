@@ -1,10 +1,10 @@
 //! CVSS v3 base metrics
 
-use crate::common::{AsStr, NumValue, ParseError};
+use crate::common::{NumValue, ParseError};
 use std::str;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AttackVector {
     Network,
     Adjacent,
@@ -13,14 +13,14 @@ pub enum AttackVector {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AttackComplexity {
     Low,
     High,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum PrivilegesRequired {
     None,
     Low,
@@ -28,21 +28,21 @@ pub enum PrivilegesRequired {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum UserInteraction {
     None,
     Required,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Scope {
     Unchanged,
     Changed,
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Confidentiality {
     High,
     Low,
@@ -50,7 +50,7 @@ pub enum Confidentiality {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Integrity {
     High,
     Low,
@@ -58,15 +58,15 @@ pub enum Integrity {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Availability {
     High,
     Low,
     None,
 }
 
-impl AsStr for AttackVector {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AttackVector {
+    fn as_ref(&self) -> &str {
         match self {
             AttackVector::Network => "N",
             AttackVector::Adjacent => "A",
@@ -101,8 +101,8 @@ impl NumValue for AttackVector {
     }
 }
 
-impl AsStr for AttackComplexity {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AttackComplexity {
+    fn as_ref(&self) -> &str {
         match self {
             AttackComplexity::Low => "L",
             AttackComplexity::High => "H",
@@ -131,8 +131,8 @@ impl NumValue for AttackComplexity {
     }
 }
 
-impl AsStr for PrivilegesRequired {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for PrivilegesRequired {
+    fn as_ref(&self) -> &str {
         match self {
             PrivilegesRequired::None => "N",
             PrivilegesRequired::Low => "L",
@@ -180,8 +180,8 @@ impl NumValue for PrivilegesRequired {
     }
 }
 
-impl AsStr for UserInteraction {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for UserInteraction {
+    fn as_ref(&self) -> &str {
         match self {
             UserInteraction::None => "N",
             UserInteraction::Required => "R",
@@ -210,8 +210,8 @@ impl NumValue for UserInteraction {
     }
 }
 
-impl AsStr for Scope {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Scope {
+    fn as_ref(&self) -> &str {
         match self {
             Scope::Unchanged => "U",
             Scope::Changed => "C",
@@ -231,8 +231,8 @@ impl str::FromStr for Scope {
     }
 }
 
-impl AsStr for Confidentiality {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Confidentiality {
+    fn as_ref(&self) -> &str {
         match self {
             Confidentiality::High => "H",
             Confidentiality::Low => "L",
@@ -264,8 +264,8 @@ impl NumValue for Confidentiality {
     }
 }
 
-impl AsStr for Integrity {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Integrity {
+    fn as_ref(&self) -> &str {
         match self {
             Integrity::High => "H",
             Integrity::Low => "L",
@@ -297,8 +297,8 @@ impl NumValue for Integrity {
     }
 }
 
-impl AsStr for Availability {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Availability {
+    fn as_ref(&self) -> &str {
         match self {
             Availability::High => "H",
             Availability::Low => "L",

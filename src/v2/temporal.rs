@@ -1,10 +1,10 @@
 //! CVSS v2 temporal metrics
 
-use crate::common::{AsStr, NumValue, Optional, ParseError};
+use crate::common::{NumValue, Optional, ParseError};
 use std::str;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum Exploitability {
     NotDefined,
     High,
@@ -14,7 +14,7 @@ pub enum Exploitability {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum RemediationLevel {
     NotDefined,
     Unavailable,
@@ -24,7 +24,7 @@ pub enum RemediationLevel {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ReportConfidence {
     Unconfirmed,
     Uncorroborated,
@@ -32,8 +32,8 @@ pub enum ReportConfidence {
     NotDefined,
 }
 
-impl AsStr for Exploitability {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for Exploitability {
+    fn as_ref(&self) -> &str {
         match self {
             Exploitability::NotDefined => "ND",
             Exploitability::High => "H",
@@ -80,8 +80,8 @@ impl Optional for Exploitability {
     }
 }
 
-impl AsStr for RemediationLevel {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for RemediationLevel {
+    fn as_ref(&self) -> &str {
         match self {
             RemediationLevel::NotDefined => "ND",
             RemediationLevel::Unavailable => "U",
@@ -128,8 +128,8 @@ impl Optional for RemediationLevel {
     }
 }
 
-impl AsStr for ReportConfidence {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ReportConfidence {
+    fn as_ref(&self) -> &str {
         match self {
             ReportConfidence::Unconfirmed => "UC",
             ReportConfidence::Uncorroborated => "UR",

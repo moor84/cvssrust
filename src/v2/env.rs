@@ -1,10 +1,10 @@
 //! CVSS v2 environmental metrics
 
-use crate::common::{AsStr, NumValue, Optional, ParseError};
+use crate::common::{NumValue, Optional, ParseError};
 use std::str;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum CollateralDamagePotential {
     None,
     Low,
@@ -15,7 +15,7 @@ pub enum CollateralDamagePotential {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum TargetDistribution {
     None,
     Low,
@@ -25,7 +25,7 @@ pub enum TargetDistribution {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum ConfidentialityRequirement {
     NotDefined,
     High,
@@ -34,7 +34,7 @@ pub enum ConfidentialityRequirement {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum IntegrityRequirement {
     NotDefined,
     High,
@@ -43,7 +43,7 @@ pub enum IntegrityRequirement {
 }
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 pub enum AvailabilityRequirement {
     NotDefined,
     High,
@@ -51,8 +51,8 @@ pub enum AvailabilityRequirement {
     Low,
 }
 
-impl AsStr for CollateralDamagePotential {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for CollateralDamagePotential {
+    fn as_ref(&self) -> &str {
         match self {
             CollateralDamagePotential::NotDefined => "ND",
             CollateralDamagePotential::None => "N",
@@ -102,8 +102,8 @@ impl Optional for CollateralDamagePotential {
     }
 }
 
-impl AsStr for TargetDistribution {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for TargetDistribution {
+    fn as_ref(&self) -> &str {
         match self {
             TargetDistribution::NotDefined => "ND",
             TargetDistribution::High => "H",
@@ -150,8 +150,8 @@ impl Optional for TargetDistribution {
     }
 }
 
-impl AsStr for ConfidentialityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for ConfidentialityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             ConfidentialityRequirement::NotDefined => "ND",
             ConfidentialityRequirement::High => "H",
@@ -195,8 +195,8 @@ impl Optional for ConfidentialityRequirement {
     }
 }
 
-impl AsStr for IntegrityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for IntegrityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             IntegrityRequirement::NotDefined => "ND",
             IntegrityRequirement::High => "H",
@@ -240,8 +240,8 @@ impl Optional for IntegrityRequirement {
     }
 }
 
-impl AsStr for AvailabilityRequirement {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for AvailabilityRequirement {
+    fn as_ref(&self) -> &str {
         match self {
             AvailabilityRequirement::NotDefined => "ND",
             AvailabilityRequirement::High => "H",
