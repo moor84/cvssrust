@@ -5,13 +5,13 @@ pub mod env;
 pub mod score;
 pub mod temporal;
 
-use super::common::{append_metric, append_metric_optional, parse_metrics, AsStr, ParseError};
+use super::common::{append_metric, append_metric_optional, parse_metrics, ParseError};
 use std::fmt;
 use std::fmt::Display;
 use std::str::FromStr;
 
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, PartialOrd, Ord, Hash)]
 pub enum MinorVersion {
     V0 = 0,
     V1 = 1,
@@ -31,8 +31,8 @@ impl FromStr for MinorVersion {
     }
 }
 
-impl AsStr for MinorVersion {
-    fn as_str(&self) -> &str {
+impl AsRef<str> for MinorVersion {
+    fn as_ref(&self) -> &str {
         match self {
             MinorVersion::V0 => "CVSS:3.0",
             MinorVersion::V1 => "CVSS:3.1",
@@ -42,7 +42,7 @@ impl AsStr for MinorVersion {
 
 #[rustfmt::skip]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Hash)]
 /// CVSS vector version 3.0/3.1
 /// 
 /// ```
@@ -91,6 +91,7 @@ pub struct V3Vector {
 impl V3Vector {
     /// Constructor
     #[rustfmt::skip]
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         attack_vector: base::AttackVector, attack_complexity: base::AttackComplexity,
         privileges_required: base::PrivilegesRequired, user_interaction: base::UserInteraction,
@@ -128,7 +129,7 @@ impl V3Vector {
     }
 
     fn as_string(&self) -> String {
-        let mut vector = String::from(self.minor_version.as_str());
+        let mut vector = String::from(self.minor_version.as_ref());
 
         append_metric(&mut vector, "AV", &self.attack_vector);
         append_metric(&mut vector, "AC", &self.attack_complexity);
@@ -209,6 +210,39 @@ impl V3Vector {
         vector.modified_availability =          env::ModifiedAvailability         ::from_str(parsed.get("MA").unwrap_or(&ND))?;
 
         Ok(vector)
+    }
+
+    /// Parse the temporal fields in `temporal_str`, adding them to the `V3Vector`.
+    ///
+    /// ```
+    /// use cvssrust::v3::V3Vector;
+    /// use cvssrust::v3::temporal::{ExploitCodeMaturity, RemediationLevel, ReportConfidence};
+    /// use std::str::FromStr;
+    ///
+    /// let cvss_base = "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N";
+    /// let cvss_temporal = "E:P/RL:W/RC:C";
+    ///
+    /// let mut cvss = V3Vector::from_str(cvss_base).unwrap();
+    /// assert_eq!(cvss.exploit_code_maturity, ExploitCodeMaturity::NotDefined);
+    /// assert_eq!(cvss.remediation_level, RemediationLevel::NotDefined);
+    /// assert_eq!(cvss.report_confidence, ReportConfidence::NotDefined);
+    ///
+    /// cvss.extend_with_temporal(cvss_temporal).unwrap();
+    /// assert_eq!(cvss.exploit_code_maturity, ExploitCodeMaturity::ProofOfConcept);
+    /// assert_eq!(cvss.remediation_level, RemediationLevel::Workaround);
+    /// assert_eq!(cvss.report_confidence, ReportConfidence::Confirmed);
+    /// ```
+    #[rustfmt::skip]
+    pub fn extend_with_temporal(&mut self, temporal_str: &str) -> Result<(), ParseError> {
+        let parsed = parse_metrics(temporal_str)?;
+
+        const ND: &str = "X";
+
+        self.exploit_code_maturity =  temporal::ExploitCodeMaturity   ::from_str(parsed.get("E").unwrap_or(&ND))?;
+        self.remediation_level =      temporal::RemediationLevel      ::from_str(parsed.get("RL").unwrap_or(&ND))?;
+        self.report_confidence =      temporal::ReportConfidence      ::from_str(parsed.get("RC").unwrap_or(&ND))?;
+
+        Ok(())
     }
 }
 
